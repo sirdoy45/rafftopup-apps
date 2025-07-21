@@ -15,6 +15,19 @@
     <link href="/style/trix.css" rel="stylesheet" />
     @include('includes.style')
     @stack('addon-style')
+    
+    <!-- Simple inline styles for dropdown fixes -->
+    <style>
+      .profile-picture {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+      }
+      .dropdown-menu {
+        right: 0;
+        left: auto;
+      }
+    </style>
   </head>
 
   <body>
@@ -23,7 +36,7 @@
         <!-- Sidebar -->
         <div class="border-right" id="sidebar-wrapper">
           <div class="sidebar-heading text-center">
-            <a href="/"><img src="{{ asset('public/images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="width: 250px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;"></a>
+            <a href="/"><img src="{{ asset('public/images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="max-width: 250px;"></a>
           </div>
           <div class="list-group list-group-flush">
             <a href="/dashboard" class="list-group-item list-group-item-action {{ request()->is('dashboard') ? 'active' : '' }}">
@@ -53,16 +66,19 @@
               <!-- Desktop Menu -->
               <ul class="navbar-nav ml-auto d-none d-lg-flex">
                 <li class="nav-item dropdown">
-                  <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                     style="display: flex; align-items: center;">
                     @if (Auth::user()->img_profile)
-                      <img id="profilePic" class="rounded-circle mr-2 profile-picture" src="{{ asset('storage/' . Auth::user()->img_profile) }}">
+                      <img src="{{ asset('storage/' . Auth::user()->img_profile) }}" 
+                           class="rounded-circle mr-2 profile-picture">
                     @else
-                      <img src="{{ asset('public/images/raffstore-profile.jpg') }}" alt="" class="rounded-circle mr-2 profile-picture" />
+                      <img src="{{ asset('public/images/raffstore-profile.jpg') }}" 
+                           alt="Profile" class="rounded-circle mr-2 profile-picture">
                     @endif
                     {{ Auth::user()->name }}
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/">Back to Store</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -77,7 +93,14 @@
               <!-- Mobile Menu -->
               <ul class="navbar-nav d-block d-lg-none mt-3">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Hi, {{ Auth::user()->name }}</a>
+                  <a class="nav-link" href="/">Back to Store</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">Logout</a>
+                  <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                  </form>
                 </li>
               </ul>
             </div>
@@ -90,18 +113,26 @@
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript -->
+    <!-- JavaScript -->
     @stack('prepend-script')
-    <script src="/vendor/jquery/jquery.slim.min.js"></script>
-    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/script/trix.js"></script>
     <script>
+      // Initialize AOS animations
       AOS.init();
-    </script>
-    <!-- Menu Toggle Script -->
-    <script>
+      
+      // Initialize dropdowns
+      $(function () {
+        $('.dropdown-toggle').dropdown();
+      });
+      
+      // Menu toggle
       $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
