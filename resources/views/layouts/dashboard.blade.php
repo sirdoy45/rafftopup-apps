@@ -23,7 +23,7 @@
         <!-- Sidebar -->
         <div class="border-right" id="sidebar-wrapper">
           <div class="sidebar-heading text-center">
-            <a href="/"><img src="{{ asset('images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="width: 250px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;"></a>
+            <a href="/"><img src="{{ asset('public/images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="width: 250px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;"></a>
           </div>
           <div class="list-group list-group-flush">
             <a href="/dashboard" class="list-group-item list-group-item-action {{ request()->is('dashboard') ? 'active' : '' }}">
