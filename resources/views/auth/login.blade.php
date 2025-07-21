@@ -7,7 +7,7 @@
         <div class="container">
           <div class="row align-items-center row-login">
             <div class="col-lg-6 text-center">
-              <img src="{{ asset('images/RAFFSTORE-Icon.png') }}" alt="Raff Store" class="img-fluid" style="width: 550px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;">
+              <img src="{{ asset('public/images/RAFFSTORE-Icon.png') }}" alt="Raff Store" class="img-fluid" style="width: 550px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;">
             </div>
             <div class="col-lg-5">
               <h2>
