@@ -58,7 +58,7 @@
                     @if (Auth::user()->img_profile)
                       <img id="profilePic" class="rounded-circle mr-2 profile-picture" src="{{ asset('storage/' . Auth::user()->img_profile) }}">
                     @else
-                      <img src="{{ asset('images/raffstore-profile.jpg') }}" alt="" class="rounded-circle mr-2 profile-picture" />
+                      <img src="{{ asset('public/images/raffstore-profile.jpg') }}" alt="" class="rounded-circle mr-2 profile-picture" />
                     @endif
                     {{ Auth::user()->name }}
                   </a>
