@@ -95,4 +95,4 @@ Route::get('/category/type', [App\Http\Controllers\CategoryController::class, 't
 Route::get('/category/type/{slug}', [App\Http\Controllers\CategoryController::class, 'byType'])->name('category.byType');
 
 // Store Profile (Diletakkan paling bawah agar tidak konflik dengan route lain)
-Route::get('/{slugSeller}', [HomeController::class, 'storeProfile'])->name('store-profile');
+Route::get('/store/{slugSeller}', [HomeController::class, 'storeProfile'])->name('store-profile');
