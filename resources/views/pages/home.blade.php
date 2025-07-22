@@ -73,7 +73,7 @@
                   <a class="component-categories d-block" href="/categories?category={{ $category->slug }}">
                     <div class="categories-image">
                       <img
-                        src="{{ $category->photo ? Storage::url($category->photo) : asset('images/no-category.png') }}"
+                        src="{{ $category->photo ? Storage::url($category->photo) : asset('public/images/no-category.png') }}"
                         alt="{{ $category->name }}"
                         class="w-100 border-bottom-primary shadow"
                       />
@@ -117,7 +117,7 @@
                      @if ($product->galleries->count())
                           background-image: url('{{ asset('storage/' . $product->galleries->first()->photos) }}')
                       @else
-                          background-image: url('{{ asset('images/bgemptyproduct.png') }}')
+                          background-image: url('{{ asset('public/images/bgemptyproduct.png') }}')
                       @endif
                     "
                   ></div>
