@@ -13,13 +13,19 @@ use App\Http\Requests\Admin\CategoryRequest;
 
 class CategoryController extends Controller
 {
-    public function index()
-    {   
-        if (request()->ajax()) {
-            $query = Category::with('type'); // Optional jika ingin menampilkan tipe di datatable
-
-            return DataTables::of($query)
-                ->addColumn('action', function ($item) {
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Category::query();
+            
+            return DataTables::of($data)
+                ->addColumn('photo', function($item) {
+                    if ($item->photo) {
+                        return '<img src="' . asset($item->photo) . '" style="width: 50px; height: 50px; object-fit: cover;" alt="' . $item->name . '" />';
+                    }
+                    return '<img src="' . asset('images/no-category.png') . '" style="width: 50px; height: 50px; object-fit: cover;" alt="No Image" />';
+                })
+                ->addColumn('action', function($item) {
                     return '
                         <div class="btn-group">
                             <div class="dropdown">
@@ -27,10 +33,12 @@ class CategoryController extends Controller
                                     Aksi
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="' . route('category.edit', $item->id) . '">Sunting</a>
-                                    <form action="' . route('category.destroy', $item->id) . '" method="POST" onsubmit="return confirm(\'Yakin ingin menghapus?\');">
+                                    <a class="dropdown-item" href="' . route('category.edit', $item->id) . '">
+                                        Sunting
+                                    </a>
+                                    <form action="' . route('category.destroy', $item->id) . '" method="POST">
                                         ' . method_field('delete') . csrf_field() . '
-                                        <button class="dropdown-item text-danger" type="submit">
+                                        <button type="submit" class="dropdown-item text-danger">
                                             Hapus
                                         </button>
                                     </form>
@@ -38,14 +46,6 @@ class CategoryController extends Controller
                             </div>
                         </div>
                     ';
-                })
-                ->editColumn('photo', function ($item) {
-                    return $item->photo 
-                        ? '<img src="' . asset('storage/' . str_replace('public/', '', $item->photo)) . '" style="max-height: 40px;"/>'
-                        : 'Tidak ada gambar';
-                })
-                ->addColumn('type', function ($item) {
-                    return $item->type->name ?? '-';
                 })
                 ->rawColumns(['action', 'photo'])
                 ->make();
