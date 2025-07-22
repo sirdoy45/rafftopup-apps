@@ -8,11 +8,22 @@
   <title>@yield('title')</title>
 
   @stack('prepend-style')
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- AOS Animation -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <link href="/style/main.css" rel="stylesheet" />
+
+  <!-- Trix Editor -->
   <link href="/style/trix.css" rel="stylesheet" />
+
+  <!-- DataTables CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.13.1/datatables.min.css" />
+
+  <!-- Main CSS -->
+  <link href="/style/main.css" rel="stylesheet" />
+
   @stack('addon-style')
 </head>
 <body>
@@ -64,7 +75,6 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto d-none d-lg-flex">
-
               {{-- Notifikasi AJAX --}}
               <li class="nav-item dropdown" id="notif-section">
                 {{-- Notifikasi akan dimuat otomatis lewat AJAX --}}
@@ -99,13 +109,24 @@
 
   <!-- Scripts -->
   @stack('prepend-script')
-  <script src="/vendor/jquery/jquery.min.js"></script>
-  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery (CDN) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Bootstrap Bundle (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- DataTables JS (CDN) -->
   <script src="https://cdn.datatables.net/v/bs4/dt-1.13.1/datatables.min.js"></script>
+
+  <!-- AOS & Trix -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/script/trix.js"></script>
+
   <script>
     AOS.init();
+
+    // Toggle Sidebar Menu
     $("#menu-toggle").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
@@ -128,6 +149,7 @@
     // Refresh otomatis setiap 10 detik
     setInterval(loadNotifications, 10000);
   </script>
+
   @stack('addon-script')
 </body>
 </html>
