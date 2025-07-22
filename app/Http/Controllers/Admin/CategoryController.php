@@ -41,7 +41,7 @@ class CategoryController extends Controller
                 })
                 ->editColumn('photo', function ($item) {
                     return $item->photo 
-                        ? '<img src="' . asset('storage/' . str_replace('public/', '', $item->photo)) . '" style="max-height: 40px;"/>'
+                        ? '<img src="' . asset($item->photo) . '" style="max-height: 40px;"/>'
                         : 'Tidak ada gambar';
                 })
                 ->addColumn('type', function ($item) {
