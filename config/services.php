@@ -34,6 +34,7 @@ return [
     'vipreseller' => [
         'api_key' => env('VIP_API_KEY'), // ✅ Cocokkan
         'api_id'  => env('VIP_API_ID'),
+        'endpoint' => env('VIP_ENDPOINT_ORDER'),
     ],
 
 
