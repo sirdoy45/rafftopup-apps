@@ -356,7 +356,7 @@ class CheckoutController extends Controller
         $vipayment = new VIPayment( getenv('VIP_API_ID'), getenv('VIP_API_KEY'));
         // dd($vipayment->profile());
         $profile = $vipayment->profile();
-        Log::info('🔥 Hasil profile VIP', $profile);
+        Log::info('🔥 Hasil profile dari VIP Reseller:', $profile);
         if (!$profile['status']) {
         return back()->with('error', 'Gagal mengambil profil VIP Reseller: ' . $profile['message']);
         }
