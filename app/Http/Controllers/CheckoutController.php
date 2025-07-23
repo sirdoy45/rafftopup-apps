@@ -447,6 +447,18 @@ class CheckoutController extends Controller
             'credit_card' => [
                 'secure' => true
             ],
+            'enabled_payments' => [
+                'gopay',
+                'shopeepay',
+                'bank_transfer',
+                'qris',
+                'permata_va',
+                'bca_va',
+                'bni_va',
+                'bri_va',
+                'indomaret',
+                'alfamart'
+            ],
             'callbacks' => [
                 'finish' => route('payment.success')
             ]

@@ -54,10 +54,22 @@ class MidtransController extends Controller
         if ($transaction->status === 'SUCCESS') {
             $detail = $transaction->details()->first();
 
-            // Cegah pengiriman ulang
-            if ($detail->delivery_status !== 'DELIVERED') {
-                $checkout = new \App\Http\Controllers\CheckoutController();
-                $checkout->sendToVipReseller($transaction, $detail);
+            // Validasi ganda: delivery_status dan apakah sudah dikirim (safety)
+            if (!$detail || $detail->delivery_status === 'DELIVERED') {
+                Log::info('✅ Order sudah dikirim sebelumnya ke VIP. Tidak dikirim ulang.', [
+                    'order_id' => $transaction->code
+                ]);
+                return response()->json(['message' => 'Already delivered'], 200);
+            }
+
+            // Kirim ke VIP Reseller
+            $checkout = new \App\Http\Controllers\CheckoutController();
+            $result = $checkout->sendToVipReseller($transaction, $detail);
+
+            if ($result) {
+                Log::info('✅ Order berhasil dikirim ke VIP Reseller via callback', [
+                    'order_id' => $transaction->code
+                ]);
             }
         }
 
