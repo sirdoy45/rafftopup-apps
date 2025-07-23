@@ -66,10 +66,12 @@
                                     <div class="card product-card h-100 border-0 shadow-sm rounded-lg overflow-hidden">
                                         <a href="{{ route('buy.form', $product->slug) }}" class="text-decoration-none">
                                             <div class="product-image-container bg-light d-flex align-items-center justify-content-center" style="height: 140px;">
-                                                @if($product->galleries->first()->photos)
+                                                @if($product->galleries->count() > 0 && $product->galleries->first()->photos)
                                                     <img src="{{ asset('assets/product/' . $product->galleries->first()->photos) }}" 
                                                          alt="{{ $product->name }}" 
-                                                         class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                                         class="img-fluid" 
+                                                         style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                                         onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-shopping-bag fa-3x text-muted\'></i>';">
                                                 @else
                                                     <i class="fas fa-shopping-bag fa-3x text-muted"></i>
                                                 @endif
