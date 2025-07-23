@@ -73,7 +73,7 @@
                   <a class="component-categories d-block" href="/categories?category={{ $category->slug }}">
                     <div class="categories-image">
                         <img
-                            src="{{ $category->photo ? url('public/assets/category/' . $category->photo) : asset('images/no-category.png') }}"
+                            src="{{ $category->photo ? url('assets/category/' . $category->photo) : asset('images/no-category.png') }}"
                             alt="{{ $category->name }}"
                             class="w-100 border-bottom-primary shadow"
                         />
