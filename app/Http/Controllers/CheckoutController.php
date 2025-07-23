@@ -55,10 +55,17 @@ class VIPayment {
             'sign' => $this->signature
         ];
 
-        // Panggil function connect() bukan Http::withHeaders()
         $request = $this->connect($end_point, $params);
 
         $response = json_decode($request, true);
+
+        // ✅ Tambahkan validasi null
+        if (is_null($response)) {
+            return [
+                'status' => false,
+                'message' => 'Gagal menghubungi server. Response kosong atau tidak valid.'
+            ];
+        }
 
         if (isset($response['result']) && $response['result'] == false) {
             return [
@@ -69,53 +76,11 @@ class VIPayment {
 
         return [
             'status' => true,
-            'data' => $response['data'],
-            'message' => $response['message']
+            'data' => $response['data'] ?? [],
+            'message' => $response['message'] ?? ''
         ];
     }
 
-    /**
-     * Order Prepaid
-     * @param string $service_code service code
-     * @param string $data_no target number
-     * 
-     * @return array
-     * 
-     * @example order_prepaid('PLN5', '3335211111133')
-     * @example order_prepaid('PULSA5', '081234567890')
-     */
-    public function order_prepaid(
-        string $service_code,
-        string $data_no
-    ): array 
-    {
-        $end_point = $this->end_point . '/prepaid';
-
-        $params = [
-            'key' => $this->api_key,
-            'sign' => $this->signature,
-            'type' => 'order',
-            'service' => $service_code,
-            'data_no' => $data_no
-        ];
-
-        $request = $this->connect($end_point, $params);
-
-        $response = json_decode($request, true);
-
-        if (isset($response['result']) && $response['result'] == false) {
-            return [
-                'status' => false,
-                'message' => $response['message']
-            ];
-        }
-
-        return [
-            'status' => true,
-            'data' => $response['data'],
-            'message' => $response['message']
-        ];
-    }
 
     /**
      * Status Order Prepaid
