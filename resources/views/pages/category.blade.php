@@ -76,14 +76,16 @@
                                 <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $incrementProduct += 100 }}">
                                     <a class="component-products d-block" href="{{ route('buy.form', $product->slug) }}">
                                         <div class="products-thumbnail shadow-sm">
-                                            <div class="products-image"
-                                                style="
-                                                    @if ($product->galleries->count())
-                                                        background-image: url('{{ asset('assets/product/' . $product->galleries->first()->photos) }}')
-                                                    @else
-                                                        background-image: url('{{ asset('images/bgemptyproduct.png') }}')
-                                                    @endif
-                                                ">
+                                            <div class="products-image">
+                                                @if ($product->galleries->count())
+                                                    <img src="{{ asset('assets/product/' . $product->galleries->first()->photos) }}" 
+                                                        style="width: 100%; height: 200px; object-fit: cover;" 
+                                                        alt="{{ $product->name }}">
+                                                @else
+                                                    <img src="{{ asset('images/bgemptyproduct.png') }}" 
+                                                        style="width: 100%; height: 200px; object-fit: cover;" 
+                                                        alt="No Image">
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="products-text">{{ $product->name }}</div>
