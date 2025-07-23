@@ -3,7 +3,7 @@
       data-aos="fade-down">
       <div class="container mb-1">
           <a class="navbar-brand" href="{{ route('home') }}">
-            <img src="{{ asset('public/images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="width: 250px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;">
+            <img  src="{{ asset('images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="width: 250px; margin-top: -40px; margin-bottom: -30px; margin-left: -21px; padding: 20px;">
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
               aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
                                   <img id="profilePic" class="rounded-circle mr-2 profile-picture"
                                       src="{{ asset('storage/' . Auth::user()->img_profile) }}" style="object-fit:cover;">
                               @else
-                                  <img src="{{ asset('public/images/raffstore-profile.jpg') }}" alt=""
+                                  <img src="{{ asset('images/raffstore-profile.jpg') }}" alt=""
                                       class="rounded-circle mr-2 profile-picture" />
                               @endif
                               Hi, {{ Auth::user()->name }}
