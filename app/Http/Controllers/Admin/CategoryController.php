@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {   
         if (request()->ajax()) {
-            $query = Category::with('type'); // Optional jika ingin menampilkan tipe di datatable
+            $query = Category::with('type');
 
             return DataTables::of($query)
                 ->addColumn('action', function ($item) {
@@ -41,8 +41,8 @@ class CategoryController extends Controller
                 })
                 ->editColumn('photo', function ($item) {
                     return $item->photo 
-                        ? '<img src="' . asset($item->photo) . '" style="max-height: 40px;"/>'
-                        : 'Tidak ada gambar';
+                        ? '<img src="' . url('public/assets/category/' . $item->photo) . '" style="max-height: 40px; max-width: 60px; object-fit: cover;" class="rounded"/>'
+                        : '<span class="text-muted">Tidak ada gambar</span>';
                 })
                 ->addColumn('type', function ($item) {
                     return $item->type->name ?? '-';
