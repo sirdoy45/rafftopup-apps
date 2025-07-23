@@ -71,17 +71,17 @@ class CategoryController extends Controller
             'type_id' => 'required|exists:types,id',
         ]);
 
-        // Simpan file foto langsung ke folder public
+        // Simpan file foto langsung ke folder public/assets/category
         $file = $request->file('photo');
         $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
         
-        // PERBAIKAN: Sesuaikan dengan struktur server Anda
-        $publicPath = public_path('public/assets/category'); // TETAP PAKAI 'public/'
+        // PERBAIKAN: Simpan ke public/assets/category (BUKAN public/public/assets/category)
+        $publicPath = public_path('assets/category');
         if (!file_exists($publicPath)) {
             mkdir($publicPath, 0755, true);
         }
         
-        // Pindahkan file ke public/assets/category (bukan public/public/assets/category)
+        // Pindahkan file ke public/assets/category
         $file->move($publicPath, $fileName);
         
         // Simpan hanya nama file saja
@@ -127,7 +127,7 @@ class CategoryController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus foto lama jika ada
             if ($item->photo) {
-                $oldPhotoPath = public_path('public/assets/category/' . $item->photo); // TETAP PAKAI PATH INI
+                $oldPhotoPath = public_path('assets/category/' . $item->photo);
                 if (file_exists($oldPhotoPath)) {
                     unlink($oldPhotoPath);
                 }
@@ -137,8 +137,8 @@ class CategoryController extends Controller
             $file = $request->file('photo');
             $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
             
-            // PERBAIKAN: Sesuaikan dengan struktur server Anda
-            $publicPath = public_path('public/assets/category'); // TETAP PAKAI 'public/'
+            // PERBAIKAN: Simpan ke public/assets/category (BUKAN public/public/assets/category)
+            $publicPath = public_path('assets/category');
             if (!file_exists($publicPath)) {
                 mkdir($publicPath, 0755, true);
             }
