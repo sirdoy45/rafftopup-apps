@@ -68,18 +68,20 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string',
             'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'type_id' => 'required|exists:types,id', // validasi foreign key
+            'type_id' => 'required|exists:types,id',
         ]);
 
         // Simpan file foto ke storage
         $file = $request->file('photo');
         $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
-        $photoPath = $file->storeAs('assets/category', $fileName, 'public');
+        
+        // UPDATE: Ganti path dari 'assets/category' menjadi 'public/assets/category'
+        $photoPath = $file->storeAs('public/assets/category', $fileName, 'public');
 
         // Simpan data ke database
         Category::create([
             'name' => $request->name,
-            'photo' => $photoPath,
+            'photo' => $photoPath, // Ini akan menyimpan 'public/assets/category/filename.png'
             'slug' => Str::slug($request->name),
             'type_id' => $request->type_id,
         ]);
@@ -100,22 +102,43 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, $id)
     {
-        $data = $request->validated();
+        $request->validate([
+            'name' => 'required|string',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // nullable karena foto tidak wajib diupdate
+            'type_id' => 'required|exists:types,id',
+        ]);
+
         $item = Category::findOrFail($id);
 
-        $data['slug'] = Str::slug($request->name);
-
+        // Jika ada file foto yang diupload
         if ($request->hasFile('photo')) {
+            // Hapus foto lama jika ada
             if ($item->photo) {
-                Storage::delete('public/' . $item->photo);
+                Storage::delete($item->photo); // Hapus foto lama
             }
 
+            // Simpan file foto ke storage
             $file = $request->file('photo');
             $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
-            $data['photo'] = $file->storeAs('assets/category', $fileName, 'public');
+            
+            // Gunakan path yang sama dengan method store()
+            $photoPath = $file->storeAs('public/assets/category', $fileName, 'public');
+            
+            // Update data ke database
+            $item->update([
+                'name' => $request->name,
+                'photo' => $photoPath, // Ini akan menyimpan 'public/assets/category/filename.png'
+                'slug' => Str::slug($request->name),
+                'type_id' => $request->type_id,
+            ]);
+        } else {
+            // Jika tidak ada foto yang diupload, update data tanpa mengubah foto
+            $item->update([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'type_id' => $request->type_id,
+            ]);
         }
-
-        $item->update($data);
 
         return redirect()->route('category.index')->with('success', 'Kategori berhasil diperbarui!');
     }
