@@ -61,7 +61,7 @@ class VIPayment {
 
         $request = Http::withHeaders($headers)->post($end_point);
 
-        $response = json_decode($request, true);
+        //$response = json_decode($request, true);
 
         dd($request);
 
