@@ -35,7 +35,7 @@
 
                 <div class="form-group">
                   <label>Provider</label>
-                  <input type="text" name="provider" class="form-control" value="tripay" readonly>
+                  <input type="text" name="provider" class="form-control" value="vip-reseller" readonly>
                 </div>
 
                 <div class="form-group">
