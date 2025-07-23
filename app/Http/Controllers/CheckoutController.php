@@ -506,27 +506,31 @@ class CheckoutController extends Controller
         $product = $detail->product;
 
         $apiKey = config('services.vipreseller.api_key');
-        $apiSecret = config('services.vipreseller.secret');
+        $apiId  = config('services.vipreseller.api_id'); // pastikan ini ada di config
+        $sign   = md5($apiId . $apiKey); // SIGN pakai API ID + API KEY
 
-        // Ambil user_id target yang akan dikirim ke VIP Reseller
-        $userId = $detail->id_game ?? $detail->user_id ?? $detail->target_phone_number;
+        // Ambil user_id target
+        $dataNo = $detail->id_game ?? $detail->user_id ?? $detail->target_phone_number;
 
         $payload = [
             'key'     => $apiKey,
-            'sign'    => md5($apiKey . $userId . $apiSecret),
+            'sign'    => $sign,
             'type'    => 'order',
-            'code'    => $product->kode_produk,
-            'user_id' => $userId,
+            'service' => $product->kode_produk,
+            'data_no' => $dataNo,
         ];
 
+        // Tambah zone_id jika produk game
         if ($product->input_type === 'id_game') {
             $payload['zone_id'] = $detail->server;
         }
 
-        // 🔍 Logging untuk debug selama sandbox
+        // Logging sebelum request
         Log::info('🔁 Mengirim order ke VIP Reseller', $payload);
 
-        $response = Http::get('https://vip-reseller.co.id/api/order', $payload);
+        // Kirim ke endpoint VIP Reseller (pakai POST dan form-encoded)
+        $response = Http::asForm()->post('https://vip-reseller.co.id/api/prepaid', $payload);
+
         $result = $response->json();
 
         Log::info('📩 Respons dari VIP Reseller', is_array($result) ? $result : ['raw' => $response->body()]);
@@ -537,7 +541,6 @@ class CheckoutController extends Controller
             return true;
         }
 
-        // ⚠️ Jika gagal kirim, juga dicatat
         Log::warning('❌ Gagal kirim ke VIP Reseller', [
             'payload' => $payload,
             'response' => is_array($result) ? $result : ['raw' => $response->body()]
