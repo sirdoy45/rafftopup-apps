@@ -499,7 +499,6 @@ class CheckoutController extends Controller
             // ✅ Jika statusnya settlement atau capture, tampilkan sukses
             if (in_array($status->transaction_status ?? '', ['settlement', 'capture'])) {
                 $detail = $transaction->details()->first(); // ambil 1 detail
-                $this->sendToVipReseller($transaction, $detail);
 
                 return view('pages.payment_succes', compact('transaction'));
             }
