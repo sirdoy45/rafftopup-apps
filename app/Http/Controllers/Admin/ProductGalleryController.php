@@ -50,7 +50,8 @@ class ProductGalleryController extends Controller
                     ';
                 })
                 ->editColumn('photos', function($item){
-                    return $item->photos ? '<img src="'. Storage::url($item->photos) .'" style="max-height: 80px;" />' : '';
+                    // Update: Gunakan asset() untuk public/assets/product
+                    return $item->photos ? '<img src="'. asset('assets/product/' . $item->photos) .'" style="max-height: 80px;" />' : '';
                 })
                 ->rawColumns(['action', 'photos'])
                 ->make();
@@ -84,7 +85,17 @@ class ProductGalleryController extends Controller
     {
         $data = $request->only(['product_id']);
 
-        $data['photos'] = $request->file('photos')->store('assets/product','public');
+        // Update: Simpan ke public/assets/product seperti category
+        if ($request->hasFile('photos')) {
+            $file = $request->file('photos');
+            $filename = time() . '-' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            
+            // Pindahkan file ke public/assets/product
+            $file->move(public_path('assets/product'), $filename);
+            
+            // Simpan hanya nama file ke database (tanpa path)
+            $data['photos'] = $filename;
+        }
 
         ProductGallery::create($data);
 
@@ -133,7 +144,16 @@ class ProductGalleryController extends Controller
      */
     public function destroy($id)
     {
-        $item  = ProductGallery::findOrFail($id);
+        $item = ProductGallery::findOrFail($id);
+        
+        // Update: Hapus file dari public/assets/product
+        if ($item->photos) {
+            $file_path = public_path('assets/product/' . $item->photos);
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+        }
+        
         $item->delete();
 
         return redirect()->route('product-gallery.index');
