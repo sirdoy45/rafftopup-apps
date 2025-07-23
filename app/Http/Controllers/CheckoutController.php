@@ -529,7 +529,7 @@ class CheckoutController extends Controller
         $response = Http::get('https://vip-reseller.co.id/api/order', $payload);
         $result = $response->json();
 
-        Log::info('📩 Respons dari VIP Reseller', $result);
+        Log::info('📩 Respons dari VIP Reseller', is_array($result) ? $result : ['raw' => $response->body()]);
 
         if (isset($result['data']['status']) && $result['data']['status'] == 1) {
             $detail->delivery_status = 'DELIVERED';
@@ -540,7 +540,7 @@ class CheckoutController extends Controller
         // ⚠️ Jika gagal kirim, juga dicatat
         Log::warning('❌ Gagal kirim ke VIP Reseller', [
             'payload' => $payload,
-            'response' => $result
+            'response' => is_array($result) ? $result : ['raw' => $response->body()]
         ]);
 
         return false;
