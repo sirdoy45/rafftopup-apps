@@ -50,8 +50,7 @@ class ProductGalleryController extends Controller
                     ';
                 })
                 ->editColumn('photos', function($item){
-                    // Update: Gunakan asset() untuk public/assets/product
-                    return $item->photos ? '<img src="'. asset('assets/product/' . $item->photos) .'" style="max-height: 80px;" />' : '';
+                    return $item->photos ? '<img src="'. url('public/assets/product/' . $item->photos) .'" style="max-height: 80px;" />' : '';
                 })
                 ->rawColumns(['action', 'photos'])
                 ->make();

@@ -67,7 +67,7 @@
                                         <a href="{{ route('buy.form', $product->slug) }}" class="text-decoration-none">
                                             <div class="product-image-container bg-light d-flex align-items-center justify-content-center" style="height: 140px;">
                                                 @if($product->galleries->count() > 0 && $product->galleries->first()->photos)
-                                                    <img src="{{ asset('assets/product/' . $product->galleries->first()->photos) }}" 
+                                                    <img src="{{ url('public/assets/product/' . $product->galleries->first()->photos) }}" 
                                                          alt="{{ $product->name }}" 
                                                          class="img-fluid" 
                                                          style="max-height: 100%; max-width: 100%; object-fit: contain;"

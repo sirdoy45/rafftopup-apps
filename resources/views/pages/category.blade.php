@@ -78,7 +78,7 @@
                                         <div class="products-thumbnail shadow-sm">
                                             <div class="products-image" style="height: 200px; overflow: hidden;">
                                                 @if ($product->galleries->count() > 0 && $product->galleries->first()->photos)
-                                                    <img src="{{ asset('assets/product/' . $product->galleries->first()->photos) }}" 
+                                                    <img src="{{ url('public/assets/product/' . $product->galleries->first()->photos) }}" 
                                                         style="width: 100%; height: 100%; object-fit: cover;" 
                                                         alt="{{ $product->name }}"
                                                         onerror="this.onerror=null; this.src='{{ asset('images/bgemptyproduct.png') }}';">
