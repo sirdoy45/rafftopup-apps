@@ -12,6 +12,7 @@ class MidtransCallbackController extends Controller
 {
     public function handle(Request $request)
     {
+        // Konfigurasi Midtrans
         Config::$serverKey = config('midtrans.serverKey');
         Config::$isProduction = config('midtrans.isProduction');
 
@@ -22,25 +23,41 @@ class MidtransCallbackController extends Controller
             return response()->json(['message' => 'Order ID tidak ditemukan'], 400);
         }
 
+        // Validasi Signature
+        $expectedSignature = hash('sha512', $payload['order_id'] . $payload['status_code'] . $payload['gross_amount'] . Config::$serverKey);
+        if (($payload['signature_key'] ?? '') !== $expectedSignature) {
+            Log::warning('❌ Signature tidak valid', ['order_id' => $orderId]);
+            return response()->json(['message' => 'Invalid signature'], 403);
+        }
+
+        // Cari transaksi
         $transaction = Transaction::where('code', $orderId)->first();
         if (!$transaction) {
             return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
         }
 
+        // Ambil status dari Midtrans
         $status = MidtransTransaction::status($orderId);
+        $transactionStatus = $status->transaction_status ?? '';
+        $paymentType = $status->payment_type ?? null;
 
-        // Kalau sukses, kirim ke VIP
-        if (in_array($status->transaction_status ?? '', ['settlement', 'capture'])) {
+        // Update metode pembayaran
+        $transaction->payment_method = $paymentType;
+
+        if (in_array($transactionStatus, ['settlement', 'capture'])) {
+            // Hanya kirim jika belum dikirim sebelumnya
             $detail = $transaction->details()->first();
-
             if ($detail && $detail->delivery_status !== 'DELIVERED') {
+                Log::info('📦 Kirim ke VIP Reseller untuk transaksi: ' . $orderId);
                 app(\App\Http\Controllers\CheckoutController::class)->sendToVipReseller($transaction, $detail);
             }
 
-            $transaction->update(['status' => 'SUCCESS']);
-        } elseif (in_array($status->transaction_status ?? '', ['cancel', 'deny', 'expire'])) {
-            $transaction->update(['status' => 'FAILED']);
+            $transaction->status = 'SUCCESS';
+        } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
+            $transaction->status = 'FAILED';
         }
+
+        $transaction->save();
 
         return response()->json(['message' => 'Callback handled'], 200);
     }
