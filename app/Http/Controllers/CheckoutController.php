@@ -401,7 +401,7 @@ class CheckoutController extends Controller
         // Buat transaksi
         $code = 'GMK-' . mt_rand(10000, 99999) . strtoupper(substr($user->email, 0, 3));
         $detailCode = 'STF-' . mt_rand(10000, 99999) . strtoupper(substr($user->email, 0, 3));
-        $tax = 2500;
+        $tax = 1000;
         $totalPrice = $product->price + $tax;
 
         $transaction = Transaction::create([
