@@ -355,10 +355,8 @@ class CheckoutController extends Controller
         $vipayment = new VIPayment( getenv('VIP_API_ID'), getenv('VIP_API_KEY'));
         // dd($vipayment->profile());
         $profile = $vipayment->profile();
-        if ($profile['status']) {
-            dd($profile['data']);
-        } else {
-            dd($profile['message']);
+        if (!$profile['status']) {
+        return back()->with('error', 'Gagal mengambil profil VIP Reseller: ' . $profile['message']);
         }
         $product = Product::where('slug', $slug)->firstOrFail();
         return view('pages.buy', compact('product'));
