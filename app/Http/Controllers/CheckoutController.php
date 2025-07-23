@@ -353,13 +353,15 @@ class CheckoutController extends Controller
 {
     public function buyForm($slug)
     {
+        Log::info('🔍 Mengakses halaman pembelian produk', ['slug' => $slug]);
         $vipayment = new VIPayment( getenv('VIP_API_ID'), getenv('VIP_API_KEY'));
         // dd($vipayment->profile());
         $profile = $vipayment->profile();
-        Log::info('🔥 Hasil profile dari VIP Reseller:', $profile);
-        if (!$profile['status']) {
-        return back()->with('error', 'Gagal mengambil profil VIP Reseller: ' . $profile['message']);
+        if (!is_array($profile)) {
+            Log::error('❌ Profile tidak valid atau kosong', ['response' => $profile]);
+            return back()->with('error', 'Gagal menghubungi server VIP Reseller. Cek koneksi atau API.');
         }
+        dd($profile);
         $product = Product::where('slug', $slug)->firstOrFail();
         return view('pages.buy', compact('product'));
     }
