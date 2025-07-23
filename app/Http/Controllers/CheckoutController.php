@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Midtrans\Snap;
 use Illuminate\Support\Facades\Http;
 use App\Events\TransactionCreated;
+use Illuminate\Support\Facades\Log;
 // require_once 'vipayment.class.php';
 
 class VIPayment {
@@ -522,19 +523,25 @@ class CheckoutController extends Controller
             $payload['zone_id'] = $detail->server;
         }
 
-        // Kirim request ke API VIP Reseller
+        // 🔍 Logging untuk debug selama sandbox
+        Log::info('🔁 Mengirim order ke VIP Reseller', $payload);
+
         $response = Http::get('https://vip-reseller.co.id/api/order', $payload);
         $result = $response->json();
 
-        // Cek apakah sukses
+        Log::info('📩 Respons dari VIP Reseller', $result);
+
         if (isset($result['data']['status']) && $result['data']['status'] == 1) {
             $detail->delivery_status = 'DELIVERED';
             $detail->save();
             return true;
         }
 
-        // Optional: kamu bisa log kalau ingin debug
-        // \Log::warning('VIP order gagal', ['payload' => $payload, 'response' => $result]);
+        // ⚠️ Jika gagal kirim, juga dicatat
+        Log::warning('❌ Gagal kirim ke VIP Reseller', [
+            'payload' => $payload,
+            'response' => $result
+        ]);
 
         return false;
     }
