@@ -541,7 +541,6 @@ class CheckoutController extends Controller
 
         Log::info('🔁 Mengirim order ke VIP Reseller', $payload);
 
-        dd(config('services.vipreseller.endpoint'));
         $response = Http::asForm()->post(config('services.vipreseller.endpoint'), $payload);
 
         $result = $response->json();
