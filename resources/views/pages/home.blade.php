@@ -115,7 +115,7 @@
                     class="products-image"
                     style="
                      @if ($product->galleries->count())
-                          background-image: url('{{ asset('storage/' . $product->galleries->first()->photos) }}')
+                          background-image: url('{{ asset('public/assets/product/' . $product->galleries->first()->photos) }}')
                       @else
                           background-image: url('{{ asset('public/images/bgemptyproduct.png') }}')
                       @endif
