@@ -72,6 +72,10 @@
                 <div class="col-4 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                   <a class="component-categories d-block" href="/categories?category={{ $category->slug }}">
                     <div class="categories-image">
+                        {{-- Debug: tampilkan nilai photo --}}
+                        <p>Photo value: {{ $category->photo ?? 'NULL' }}</p>
+                        <p>Full path: {{ $category->photo ? asset('assets/category/' . $category->photo) : 'No photo' }}</p>
+                        
                         <img
                             src="{{ $category->photo ? asset('assets/category/' . $category->photo) : asset('images/no-category.png') }}"
                             alt="{{ $category->name }}"
