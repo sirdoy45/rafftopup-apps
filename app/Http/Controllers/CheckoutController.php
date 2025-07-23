@@ -50,20 +50,15 @@ class VIPayment {
     {
         $end_point = $this->end_point . '/profile';
 
-        $headers = [
-            'params' => [
-                'key' => $this->api_key,
-                'sign' => $this->signature
-            ]
+        $params = [
+            'key' => $this->api_key,
+            'sign' => $this->signature
         ];
 
-        // $request = $this->connect($end_point, $params);
+        // Panggil function connect() bukan Http::withHeaders()
+        $request = $this->connect($end_point, $params);
 
-        $request = Http::withHeaders($headers)->post($end_point);
-
-        //$response = json_decode($request, true);
-
-        dd($request);
+        $response = json_decode($request, true);
 
         if (isset($response['result']) && $response['result'] == false) {
             return [
