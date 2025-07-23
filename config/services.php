@@ -32,8 +32,8 @@ return [
     ],
 
     'vipreseller' => [
-        'api_key' => env('VIPRESELLER_API_KEY'),
-        'secret' => env('VIPRESELLER_SECRET'),
+        'api_key' => env('VIP_API_KEY'), // ✅ Cocokkan
+        'api_id'  => env('VIP_API_ID'),
     ],
 
 

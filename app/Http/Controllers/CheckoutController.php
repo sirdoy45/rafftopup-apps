@@ -354,14 +354,19 @@ class CheckoutController extends Controller
     public function buyForm($slug)
     {
         Log::info('🔍 Mengakses halaman pembelian produk', ['slug' => $slug]);
-        $vipayment = new VIPayment( getenv('VIP_API_ID'), getenv('VIP_API_KEY'));
-        // dd($vipayment->profile());
+
+        $vipayment = new VIPayment(
+            config('services.vipreseller.api_id'),
+            config('services.vipreseller.api_key')
+        );
+
         $profile = $vipayment->profile();
+
         if (!is_array($profile)) {
             Log::error('❌ Profile tidak valid atau kosong', ['response' => $profile]);
             return back()->with('error', 'Gagal menghubungi server VIP Reseller. Cek koneksi atau API.');
         }
-        dd($profile);
+
         $product = Product::where('slug', $slug)->firstOrFail();
         return view('pages.buy', compact('product'));
     }
@@ -503,17 +508,24 @@ class CheckoutController extends Controller
     public function sendToVipReseller($transaction, $detail)
     {
         if ($detail->delivery_status === 'DELIVERED') {
-            return true; // Sudah terkirim
+            return true;
         }
 
         $product = $detail->product;
 
         $apiKey = config('services.vipreseller.api_key');
-        $apiId  = config('services.vipreseller.api_id'); // pastikan ini ada di config
-        $sign   = md5($apiId . $apiKey); // SIGN pakai API ID + API KEY
+        $apiId  = config('services.vipreseller.api_id');
+        $sign   = md5($apiId . $apiKey);
 
-        // Ambil user_id target
         $dataNo = $detail->id_game ?? $detail->user_id ?? $detail->target_phone_number;
+
+        if (empty($dataNo)) {
+            Log::error('❌ Data target kosong. Tidak bisa kirim order.', [
+                'transaction_id' => $transaction->id,
+                'detail_id' => $detail->id
+            ]);
+            return false;
+        }
 
         $payload = [
             'key'     => $apiKey,
@@ -523,16 +535,13 @@ class CheckoutController extends Controller
             'data_no' => $dataNo,
         ];
 
-        // Tambah zone_id jika produk game
         if ($product->input_type === 'id_game') {
             $payload['zone_id'] = $detail->server;
         }
 
-        // Logging sebelum request
         Log::info('🔁 Mengirim order ke VIP Reseller', $payload);
 
-        // Kirim ke endpoint VIP Reseller (pakai POST dan form-encoded)
-        $response = Http::asForm()->post('https://vip-reseller.co.id/api/prepaid', $payload);
+        $response = Http::asForm()->post(config('services.vipreseller.endpoint'), $payload);
 
         $result = $response->json();
 
