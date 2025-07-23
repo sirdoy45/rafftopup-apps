@@ -72,11 +72,11 @@
                 <div class="col-4 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                   <a class="component-categories d-block" href="/categories?category={{ $category->slug }}">
                     <div class="categories-image">
-                      <img
-                        src="{{ $category->photo ? asset($category->photo) : asset('images/no-category.png') }}"
-                        alt="{{ $category->name }}"
-                        class="w-100 border-bottom-primary shadow"
-                      />
+                        <img
+                            src="{{ $category->photo ? asset('assets/category/' . $category->photo) : asset('images/no-category.png') }}"
+                            alt="{{ $category->name }}"
+                            class="w-100 border-bottom-primary shadow"
+                        />
                     </div>
                     <div class="overlay">
                       <div class="content">
