@@ -75,16 +75,16 @@ class CategoryController extends Controller
         $file = $request->file('photo');
         $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
         
-        // Buat folder jika belum ada  
-        $publicPath = public_path('public/assets/category'); // TAMBAHKAN 'public/'
+        // PERBAIKAN: Sesuaikan dengan struktur server Anda
+        $publicPath = public_path('public/assets/category'); // TETAP PAKAI 'public/'
         if (!file_exists($publicPath)) {
             mkdir($publicPath, 0755, true);
         }
         
-        // Pindahkan file ke public/public/assets/category
+        // Pindahkan file ke public/assets/category (bukan public/public/assets/category)
         $file->move($publicPath, $fileName);
         
-        // PERBAIKAN: Simpan hanya nama file saja
+        // Simpan hanya nama file saja
         Category::create([
             'name' => $request->name,
             'photo' => $fileName, // Hanya nama file: 'filename.png'
@@ -127,7 +127,7 @@ class CategoryController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus foto lama jika ada
             if ($item->photo) {
-                $oldPhotoPath = public_path('public/assets/category/' . $item->photo); // PERBAIKI PATH
+                $oldPhotoPath = public_path('public/assets/category/' . $item->photo); // TETAP PAKAI PATH INI
                 if (file_exists($oldPhotoPath)) {
                     unlink($oldPhotoPath);
                 }
@@ -137,17 +137,17 @@ class CategoryController extends Controller
             $file = $request->file('photo');
             $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
             
-            // Buat folder jika belum ada
-            $publicPath = public_path('public/assets/category'); // TAMBAHKAN 'public/'
+            // PERBAIKAN: Sesuaikan dengan struktur server Anda
+            $publicPath = public_path('public/assets/category'); // TETAP PAKAI 'public/'
             if (!file_exists($publicPath)) {
                 mkdir($publicPath, 0755, true);
             }
             
-            // Pindahkan file ke public/public/assets/category
+            // Pindahkan file ke public/assets/category
             $file->move($publicPath, $fileName);
             
-            // PERBAIKAN: Simpan hanya nama file
-            $updateData['photo'] = $fileName; // Hanya nama file
+            // Simpan hanya nama file
+            $updateData['photo'] = $fileName;
         }
 
         $item->update($updateData);
