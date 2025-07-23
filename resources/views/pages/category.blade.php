@@ -76,14 +76,15 @@
                                 <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $incrementProduct += 100 }}">
                                     <a class="component-products d-block" href="{{ route('buy.form', $product->slug) }}">
                                         <div class="products-thumbnail shadow-sm">
-                                            <div class="products-image">
+                                            <div class="products-image" style="height: 200px; overflow: hidden;">
                                                 @if ($product->galleries->count())
                                                     <img src="{{ asset('assets/product/' . $product->galleries->first()->photos) }}" 
-                                                        style="width: 100%; height: 200px; object-fit: cover;" 
-                                                        alt="{{ $product->name }}">
+                                                        style="width: 100%; height: 100%; object-fit: cover;" 
+                                                        alt="{{ $product->name }}"
+                                                        onerror="console.log('Image failed to load:', this.src)">
                                                 @else
                                                     <img src="{{ asset('images/bgemptyproduct.png') }}" 
-                                                        style="width: 100%; height: 200px; object-fit: cover;" 
+                                                        style="width: 100%; height: 100%; object-fit: cover;" 
                                                         alt="No Image">
                                                 @endif
                                             </div>
