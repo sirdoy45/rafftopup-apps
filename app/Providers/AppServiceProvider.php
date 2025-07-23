@@ -27,8 +27,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        Blade::directive('money', function ($money) {
-            return "Rp. <?php echo number_format($money, 0,',','.'); ?>";
+        // Fix: Blade directive yang benar
+        Blade::directive('money', function ($expression) {
+            return "<?php echo 'Rp. ' . number_format($expression, 0, ',', '.'); ?>";
         });
     }
 }
