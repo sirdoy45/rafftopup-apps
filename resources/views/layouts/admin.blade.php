@@ -32,7 +32,7 @@
       <!-- Sidebar -->
       <div class="border-right" id="sidebar-wrapper">
         <div class="sidebar-heading text-center">
-          <img src="{{ asset('public/images/RAFFSTORE-regis.png') }}" alt="Raff Store"
+          <img src="{{ asset('images/RAFFSTORE-regis.png') }}" alt="Raff Store"
             style="width: 250px; margin: -40px -21px -30px; padding: 20px;" />
         </div>
         <div class="list-group list-group-flush">
