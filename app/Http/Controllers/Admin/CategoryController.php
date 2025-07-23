@@ -71,20 +71,26 @@ class CategoryController extends Controller
             'type_id' => 'required|exists:types,id',
         ]);
 
-        // Simpan file foto ke storage
+        // Simpan file foto langsung ke folder public
         $file = $request->file('photo');
         $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
         
-        // Simpan file ke storage/app/public/assets/category
-        $file->storeAs('public/assets/category', $fileName);
+        // Buat folder jika belum ada
+        $publicPath = public_path('assets/category');
+        if (!file_exists($publicPath)) {
+            mkdir($publicPath, 0755, true);
+        }
         
-        // Simpan path yang bisa diakses dengan asset() melalui symbolic link
-        $photoPath = 'storage/assets/category/' . $fileName;
+        // Pindahkan file ke public/assets/category
+        $file->move($publicPath, $fileName);
+        
+        // Simpan path relatif untuk asset()
+        $photoPath = 'assets/category/' . $fileName;
 
         // Simpan data ke database
         Category::create([
             'name' => $request->name,
-            'photo' => $photoPath, // Simpan 'storage/assets/category/filename.png'
+            'photo' => $photoPath, // Simpan 'assets/category/filename.png'
             'slug' => Str::slug($request->name),
             'type_id' => $request->type_id,
         ]);
@@ -124,20 +130,27 @@ class CategoryController extends Controller
         if ($request->hasFile('photo')) {
             // Hapus foto lama jika ada
             if ($item->photo) {
-                // Konversi path untuk Storage::delete()
-                $oldPath = str_replace('storage/', 'public/', $item->photo);
-                Storage::delete($oldPath);
+                $oldPhotoPath = public_path($item->photo);
+                if (file_exists($oldPhotoPath)) {
+                    unlink($oldPhotoPath);
+                }
             }
 
             // Simpan file foto baru
             $file = $request->file('photo');
             $fileName = time() . '-' . Str::slug($request->name) . '.' . $file->getClientOriginalExtension();
             
-            // Simpan ke storage
-            $file->storeAs('public/assets/category', $fileName);
+            // Buat folder jika belum ada
+            $publicPath = public_path('assets/category');
+            if (!file_exists($publicPath)) {
+                mkdir($publicPath, 0755, true);
+            }
             
-            // Simpan path yang bisa diakses dengan asset()
-            $updateData['photo'] = 'storage/assets/category/' . $fileName;
+            // Pindahkan file ke public/assets/category
+            $file->move($publicPath, $fileName);
+            
+            // Simpan path relatif
+            $updateData['photo'] = 'assets/category/' . $fileName;
         }
 
         $item->update($updateData);
