@@ -57,7 +57,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-md-1">
                                             @if($product && $product->galleries->first())
-                                                <img src="{{ Storage::url($product->galleries->first()->photos) }}" 
+                                                <img src="{{ url('public/assets/product/' . $product->galleries->first()->photos) }}" 
                                                      class="w-75" 
                                                      alt="{{ $product->name }}" />
                                             @else
