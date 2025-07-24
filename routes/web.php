@@ -32,7 +32,7 @@ Route::get('/categories/{id}', [App\Http\Controllers\CategoryController::class, 
 
 // Beli Produk Langsung
 Route::get('/buy/{slug}', [CheckoutController::class, 'buyForm'])->name('buy.form');
-Route::post('/buy/{slug}', [CheckoutController::class, 'process'])->name('buy.process');
+Route::post('/buy/{slug}', [CheckoutController::class, 'process'])->middleware('auth')->name('buy.process');
 
 // Payment hasil
 Route::get('/payment/success', [CheckoutController::class, 'success'])->name('payment.success');

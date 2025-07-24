@@ -74,9 +74,16 @@
         @endif
 
         {{-- Tombol submit --}}
-        <button type="submit" class="btn btn-success mt-4">
-            Buy Now (Rp{{ number_format($product->price) }})
-        </button>
+        @guest
+            <a href="{{ route('login') }}" class="btn btn-warning mt-4">
+                Login terlebih dahulu untuk membeli
+            </a>
+        @else
+            <button type="submit" class="btn btn-success mt-4">
+                Buy Now (Rp{{ number_format($product->price) }})
+            </button>
+        @endguest
+
     </form>
 </div>
 @endsection

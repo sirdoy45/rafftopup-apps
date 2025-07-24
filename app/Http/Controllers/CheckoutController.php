@@ -373,6 +373,12 @@ class CheckoutController extends Controller
 
     public function process(Request $request, $slug)
     {
+         if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk melakukan transaksi.');
+        }
+
+        $user = Auth::user();
+            
         // Konfigurasi Midtrans
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = config('midtrans.isProduction');
