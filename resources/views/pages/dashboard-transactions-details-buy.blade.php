@@ -21,13 +21,11 @@
                             <div class="row">
                                 <div class="col-12 col-md-4">
                                     @if ($transaction->product && $transaction->product->galleries->isNotEmpty())
-                                        <img src="{{ Storage::url($transaction->product->galleries->first()->photos) }}"
+                                        <img src="{{ url('public/assets/product/' . $transaction->product->galleries->first()->photos) }}"
                                             alt="{{ $transaction->product->name }}" 
                                             class="w-100 mb-3 rounded" />
                                     @else
-                                        <img src="public/assets/product/" 
-                                             alt="Default Product" 
-                                             class="w-100 mb-3 rounded" />
+                                        <div class="bg-light text-center w-100 p-2 rounded">No Image</div>
                                     @endif
                                 </div>
                                 <div class="col-12 col-md-8">
