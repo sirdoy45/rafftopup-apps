@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
 @section('title')
-  Tambah Produk
+  Products
 @endsection
 
 @section('content')
 <div class="section-content section-dashboard-home" data-aos="fade-up">
   <div class="container-fluid">
     <div class="dashboard-heading">
-        <h2 class="dashboard-title">Tambah Produk</h2>
-        <p class="dashboard-subtitle">Masukkan data produk baru</p>
+        <h2 class="dashboard-title">Products</h2>
+        <p class="dashboard-subtitle">Create New Product</p>
     </div>
     <div class="dashboard-content">
       <div class="row">
