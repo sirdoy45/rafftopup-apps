@@ -31,12 +31,14 @@
             width: 100%;
             margin-top: 50px;
             text-align: right;
+            line-height: 1.6;
         }
 
-        .signature .name {
-            margin-top: 80px;
-            font-weight: bold;
-            text-decoration: underline;
+        .signature .sign-line {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 150px; /* Lebar garis disesuaikan */
+            margin-top: 50px; /* Jarak antara "Admin" dan garis tanda tangan */
         }
     </style>
 </head>
@@ -82,10 +84,9 @@
 
     <div class="signature">
         Dumai, {{ \Carbon\Carbon::now()->format('d F Y') }}<br>
-        Admin<br><br><br><br>
-        <span style="display: inline-block; border-bottom: 1px solid #000; width: 200px;"></span>
+        Admin<br>
+        <span class="sign-line"></span>
     </div>
-
 
 </body>
 </html>
