@@ -54,7 +54,8 @@
       <div class="d-block d-lg-none pt-5">
         <div class="text-center mb-4">
           <img src="{{ asset('images/RAFFSTORE-Icon.png') }}" alt="Raff Store"
-            class="img-fluid" style="max-height: 150px;">
+            class="img-fluid"
+            style="max-width: 220px; width: 80%;">
         </div>
         <h4 class="text-center mb-3">
           Belanja kebutuhan digital,<br />jadi lebih mudah
