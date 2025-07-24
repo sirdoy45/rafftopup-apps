@@ -74,13 +74,23 @@
                   </ul>
 
                   <!-- Mobile Menu -->
-                  <ul class="navbar-nav d-block d-lg-none">
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">
-                              Hi, {{ Auth::user()->name }}
-                          </a>
-                      </li>
-                  </ul>
+                <ul class="navbar-nav d-block d-lg-none">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard-settings-account') }}">Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
+                        Logout
+                        </a>
+                        <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
               @endauth
           </div>
       </div>
