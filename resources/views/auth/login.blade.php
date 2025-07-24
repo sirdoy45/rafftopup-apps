@@ -3,19 +3,19 @@
 @section('content')
 
 <div class="page-content page-auth">
-  <div class="section-store-auth" data-aos="fade-up">
+  <div class="section-store-auth py-5" data-aos="fade-up">
     <div class="container">
-      <div class="row justify-content-center align-items-center min-vh-100">
+      <div class="d-flex flex-column flex-lg-row align-items-center justify-content-center min-vh-100">
 
         <!-- LOGO -->
-        <div class="col-lg-6 text-center mb-4 mb-lg-0">
+        <div class="text-center mb-4 mb-lg-0 me-lg-5">
           <img src="{{ asset('images/RAFFSTORE-Icon.png') }}" alt="Raff Store"
             class="img-fluid"
-            style="max-width: 400px; height: auto;">
+            style="max-width: 300px; height: auto;">
         </div>
 
         <!-- FORM LOGIN -->
-        <div class="col-lg-5">
+        <div style="max-width: 400px; width: 100%;">
           <h2 class="text-center mb-4">
             Belanja kebutuhan digital,<br />
             menjadi lebih mudah
@@ -24,7 +24,6 @@
           <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <!-- Email -->
             <div class="form-group">
               <label for="email">Email Address</label>
               <input id="email" type="email"
@@ -37,7 +36,6 @@
               @enderror
             </div>
 
-            <!-- Password -->
             <div class="form-group mt-3">
               <label for="password">Password</label>
               <input id="password" type="password"
@@ -50,13 +48,11 @@
               @enderror
             </div>
 
-            <!-- Tombol Login -->
-            <button type="submit" class="btn btn-primary btn-block mt-4">
+            <button type="submit" class="btn btn-primary btn-block mt-4 w-100">
               Login
             </button>
 
-            <!-- Tombol Register -->
-            <a class="btn btn-light btn-block mt-2 text-center" href="{{ route('register') }}">
+            <a class="btn btn-light btn-block mt-2 w-100 text-center" href="{{ route('register') }}">
               Sign Up Now
             </a>
           </form>
