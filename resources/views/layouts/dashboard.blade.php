@@ -36,7 +36,7 @@
         <!-- Sidebar -->
         <div class="border-right" id="sidebar-wrapper">
           <div class="sidebar-heading text-center">
-            <a href="/"><img src="{{ asset('public/images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="max-width: 250px;"></a>
+            <a href="/"><img src="{{ asset('images/RAFFSTORE-regis.png') }}" alt="Raff Store" style="max-width: 250px;"></a>
           </div>
           <div class="list-group list-group-flush">
             <a href="/dashboard" class="list-group-item list-group-item-action {{ request()->is('dashboard') ? 'active' : '' }}">
@@ -73,7 +73,7 @@
                       <img src="{{ asset('storage/' . Auth::user()->img_profile) }}" 
                            class="rounded-circle mr-2 profile-picture">
                     @else
-                      <img src="{{ asset('public/images/raffstore-profile.jpg') }}" 
+                      <img src="/images/raffstore-profile.jpg" 
                            alt="Profile" class="rounded-circle mr-2 profile-picture">
                     @endif
                     {{ Auth::user()->name }}
