@@ -519,10 +519,22 @@ class CheckoutController extends Controller
     public function sendToVipReseller($transaction, $detail)
     {
         if ($detail->delivery_status === 'DELIVERED') {
+            Log::info('ℹ️ Produk sudah terkirim sebelumnya, tidak dikirim ulang.', [
+                'transaction_id' => $transaction->id,
+                'detail_id' => $detail->id
+            ]);
             return true;
         }
 
         $product = $detail->product;
+
+        if (!$product) {
+            Log::error('❌ Produk tidak ditemukan dalam detail.', [
+                'transaction_id' => $transaction->id,
+                'detail_id' => $detail->id
+            ]);
+            return false;
+        }
 
         $apiKey = config('services.vipreseller.api_key');
         $apiId  = config('services.vipreseller.api_id');

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Events\NewTransactionEvent;
+use App\Http\Controllers\CheckoutController;
 
 class MidtransController extends Controller
 {
@@ -15,19 +15,20 @@ class MidtransController extends Controller
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = config('midtrans.isProduction');
 
-        // Ambil notifikasi dari Midtrans
+        // Notifikasi dari Midtrans
         $notif = new \Midtrans\Notification();
 
-        // Ambil data dari notifikasi
+        // Ambil data notifikasi
         $transactionStatus = $notif->transaction_status;
         $paymentType = $notif->payment_type;
         $fraudStatus = $notif->fraud_status;
         $orderId = $notif->order_id;
 
-        // Ambil transaksi berdasarkan kode
-        $transaction = Transaction::where('code', $orderId)->first();
+        // Ambil transaksi dengan relasi
+        $transaction = Transaction::with('details.product')->where('code', $orderId)->first();
 
         if (!$transaction) {
+            Log::error('❌ Transaksi tidak ditemukan untuk kode: ' . $orderId);
             return response()->json(['message' => 'Transaction not found'], 404);
         }
 
@@ -51,11 +52,18 @@ class MidtransController extends Controller
 
         $transaction->save();
 
+        // Jalankan pengiriman ke VIP hanya jika sukses
         if ($transaction->status === 'SUCCESS') {
-            $detail = $transaction->details()->first();
+            $detail = $transaction->details->first(); // Sudah eager loaded
 
-            // Validasi ganda: delivery_status dan apakah sudah dikirim (safety)
-            if (!$detail || $detail->delivery_status === 'DELIVERED') {
+            if (!$detail) {
+                Log::error('❌ Tidak ada detail transaksi ditemukan.', [
+                    'order_id' => $transaction->code
+                ]);
+                return response()->json(['message' => 'Transaction detail not found'], 200);
+            }
+
+            if ($detail->delivery_status === 'DELIVERED') {
                 Log::info('✅ Order sudah dikirim sebelumnya ke VIP. Tidak dikirim ulang.', [
                     'order_id' => $transaction->code
                 ]);
@@ -63,18 +71,21 @@ class MidtransController extends Controller
             }
 
             // Kirim ke VIP Reseller
-            $checkout = new \App\Http\Controllers\CheckoutController();
+            $checkout = new CheckoutController();
             $result = $checkout->sendToVipReseller($transaction, $detail);
 
             if ($result) {
                 Log::info('✅ Order berhasil dikirim ke VIP Reseller via callback', [
                     'order_id' => $transaction->code
                 ]);
+            } else {
+                Log::warning('⚠️ Gagal mengirim ke VIP Reseller via callback', [
+                    'order_id' => $transaction->code
+                ]);
             }
         }
 
-        // (Opsional) Log aktivitas callback
-        Log::info('Midtrans callback handled', [
+        Log::info('📥 Midtrans callback handled', [
             'order_id' => $orderId,
             'status' => $transactionStatus,
             'payment' => $paymentType
