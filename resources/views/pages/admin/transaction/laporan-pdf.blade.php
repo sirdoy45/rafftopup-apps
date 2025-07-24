@@ -5,17 +5,54 @@
     <title>{{ $judul }}</title>
     <style>
         body { font-family: Arial, sans-serif; font-size: 12px; }
-        h2 { text-align: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; }
+        h2 { text-align: center; margin: 0; }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            width: 60px; /* Atur ukuran logo */
+            height: auto;
+            margin-right: 15px;
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: left;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+
+        .signature {
+            width: 100%;
+            margin-top: 50px;
+            text-align: right;
+        }
+
+        .signature .name {
+            margin-top: 80px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h2>{{ $judul }}</h2>
+
+    <div class="header">
+        <img src="/images/Raffstore.png.png" alt="Logo">
+        <div class="header-title">
+            <h2>{{ $judul }}</h2>
+        </div>
+    </div>
+
     <table>
         <thead>
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Invoice</th>
                 <th>Nama</th>
                 <th>Metode</th>
@@ -42,5 +79,13 @@
             @endforelse
         </tbody>
     </table>
+
+    <div class="signature">
+        Dumai, {{ \Carbon\Carbon::now()->format('d F Y') }}<br>
+        Admin<br><br><br><br>
+        <span style="display: inline-block; border-bottom: 1px solid #000; width: 200px;"></span>
+    </div>
+
+
 </body>
 </html>
