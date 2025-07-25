@@ -437,7 +437,7 @@ class CheckoutController extends Controller
         // Kurangi stok
         $product->decrement('quantity');
 
-        event(new TransactionCreated($transaction));
+        //event(new TransactionCreated($transaction));
 
         // Buat Snap Token
         $midtransParams = [
@@ -491,25 +491,27 @@ class CheckoutController extends Controller
             return redirect()->route('payment.failed')->with('error', 'Transaksi tidak ditemukan.');
         }
 
-        // Konfigurasi Midtrans
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = config('midtrans.isProduction');
 
         try {
             $status = \Midtrans\Transaction::status($orderId);
-
             if (is_array($status)) {
                 $status = (object) $status;
             }
 
-            // ✅ Jika statusnya settlement atau capture, tampilkan sukses
             if (in_array($status->transaction_status ?? '', ['settlement', 'capture'])) {
-                $detail = $transaction->details()->first(); // ambil 1 detail
+                $transaction->status = 'SUCCESS';
+                $transaction->payment_method = $status->payment_type ?? 'unknown';
+                $transaction->save();
+
+                // ✅ Kirim ke VIP Reseller di sini
+                $detail = $transaction->details()->first();
+                $this->sendToVipReseller($transaction, $detail);
 
                 return view('pages.payment_succes', compact('transaction'));
             }
 
-            // ✅ Jika tidak, arahkan ke halaman gagal
             return redirect()->route('payment.failed')->with('error', 'Pembayaran tidak berhasil.');
 
         } catch (\Exception $e) {
