@@ -70,6 +70,14 @@ class MidtransController extends Controller
                 return response()->json(['message' => 'Already delivered'], 200);
             }
 
+            // CEK LINGKUNGAN SEBELUM KIRIM
+            if (app()->environment() !== 'production') {
+                Log::info('🔒 Callback berhasil, tapi tidak dikirim ke VIP karena bukan di production.', [
+                    'order_id' => $transaction->code
+                ]);
+                return response()->json(['message' => 'Callback handled in non-production, VIP not called'], 200);
+            }
+
             // Kirim ke VIP Reseller
             $checkout = new CheckoutController();
             $result = $checkout->sendToVipReseller($transaction, $detail);
