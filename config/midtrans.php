@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'serverKey' => 'Mid-server-9bOVBHQyRHdkoCize1eM31Ui',
-    'clientKey' => 'Mid-client-cHPEz8RpSXdcLD13',
-    'isProduction' => env('MIDTRANS_IS_PRODUCTION', true),
+    'serverKey' => env('MIDTRANS_SERVER_KEY'),
+    'clientKey' => env('MIDTRANS_CLIENT_KEY'),
+    'isProduction' => env('MIDTRANS_IS_PRODUCTION', false),
     'isSanitized' => true,
     'is3ds' => true,
 ];
