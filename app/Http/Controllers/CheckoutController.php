@@ -505,9 +505,15 @@ class CheckoutController extends Controller
                 $transaction->payment_method = $status->payment_type ?? 'unknown';
                 $transaction->save();
 
-                // ✅ Kirim ke VIP Reseller di sini
-                $detail = $transaction->details()->first();
-                $this->sendToVipReseller($transaction, $detail);
+                // ✅ Kirim ke VIP Reseller hanya jika mode produksi
+                if (config('midtrans.isProduction')) {
+                    $detail = $transaction->details()->first();
+                    $this->sendToVipReseller($transaction, $detail);
+                } else {
+                    Log::info('⚠️ Midtrans mode sandbox, tidak mengirim ke VIP Reseller.', [
+                        'transaction_id' => $transaction->id
+                    ]);
+                }
 
                 return view('pages.payment_succes', compact('transaction'));
             }
