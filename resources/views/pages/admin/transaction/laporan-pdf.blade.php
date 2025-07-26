@@ -106,7 +106,7 @@
             <tr>
                 <th>No.</th>
                 <th>Invoice</th>
-                <th>Nama</th>
+                <th>Nama Pelanggan</th>
                 <th>Metode</th>
                 <th>Status</th>
                 <th>Total</th>
