@@ -42,6 +42,14 @@
             <option value="CANCELLED">Dibatalkan</option>
           </select>
         </div>
+        <div class="col-md-3">
+          <label>Jenis Produk</label>
+          <select name="jenis_produk" class="form-control">
+            <option value="">Semua</option>
+            <option value="game">Game</option>
+            <option value="pulsa">Pulsa</option>
+          </select>
+        </div>
         <div class="col-md-2 align-self-end">
           <button type="submit" class="btn btn-danger btn-block">
             <i class="fas fa-file-pdf"></i> Cetak Laporan

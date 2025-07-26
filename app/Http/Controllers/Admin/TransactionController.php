@@ -78,17 +78,17 @@ class TransactionController extends Controller
     {
         $filter = $request->filter;
         $status = $request->status;
+        $jenis_produk = $request->jenis_produk;
         $judul = 'Laporan Transaksi';
 
-        $query = Transaction::with('user');
+        $query = Transaction::with(['user', 'details.product.category.type']); // Pastikan relasi lengkap
 
-        // Filter status jika dipilih
         if ($status) {
             $query->where('status', $status);
             $judul .= ' - Status: ' . ucfirst(strtolower($status));
         }
 
-        // Filter berdasarkan jenis laporan
+        // Filter jenis laporan
         if ($filter === 'harian' && $request->tanggal) {
             $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
             $query->whereDate('created_at', $tanggal);
@@ -100,6 +100,14 @@ class TransactionController extends Controller
         } elseif ($filter === 'tahunan' && $request->tahun) {
             $query->whereYear('created_at', $request->tahun);
             $judul .= ' - Tahun: ' . $request->tahun;
+        }
+
+        // Tambahkan filter berdasarkan jenis produk
+        if ($jenis_produk) {
+            $query->whereHas('details.product.category.type', function ($q) use ($jenis_produk) {
+                $q->where('slug', $jenis_produk);
+            });
+            $judul .= ' - Jenis Produk: ' . ucfirst($jenis_produk);
         }
 
         $transaksi = $query->get();
