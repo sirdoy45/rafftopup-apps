@@ -509,10 +509,6 @@ class CheckoutController extends Controller
                 if (config('midtrans.isProduction')) {
                     $detail = $transaction->details()->first();
                     $this->sendToVipReseller($transaction, $detail);
-                } else {
-                    Log::info('⚠️ Midtrans mode sandbox, tidak mengirim ke VIP Reseller.', [
-                        'transaction_id' => $transaction->id
-                    ]);
                 }
 
                 return view('pages.payment_succes', compact('transaction'));
