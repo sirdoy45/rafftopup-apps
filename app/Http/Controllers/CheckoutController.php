@@ -529,13 +529,13 @@ class CheckoutController extends Controller
     public function sendToVipReseller($transaction, $detail)
     {
         // ⛔ Cegah kirim ke VIP saat masih sandbox
-        if (!config('midtrans.isProduction')) {
-            Log::info('⚠️ Midtrans mode sandbox, tidak mengirim ke VIP Reseller.', [
-                'transaction_id' => $transaction->id,
-                'detail_id' => $detail->id
-            ]);
-            return false;
-        }
+        // if (!config('midtrans.isProduction')) {
+        //     Log::info('⚠️ Midtrans mode sandbox, tidak mengirim ke VIP Reseller.', [
+        //         'transaction_id' => $transaction->id,
+        //         'detail_id' => $detail->id
+        //     ]);
+        //     return false;
+        // }
         
         if ($detail->delivery_status === 'DELIVERED') {
             Log::info('ℹ️ Produk sudah terkirim sebelumnya, tidak dikirim ulang.', [
