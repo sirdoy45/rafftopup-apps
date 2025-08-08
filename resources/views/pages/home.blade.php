@@ -117,7 +117,7 @@
                      @if ($product->galleries->count())
                           background-image: url('{{ asset('public/assets/product/' . $product->galleries->first()->photos) }}')
                       @else
-                          background-image: url('{{ asset('public/images/bgemptyproduct.png') }}')
+                          background-image: url('{{ asset('images/raffstore-profile.jpg') }}')
                       @endif
                     "
                   ></div>
