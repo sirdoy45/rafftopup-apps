@@ -62,9 +62,9 @@
                 <div class="form-group">
                   <label>Input Type</label>
                   <select name="input_type" class="form-control" required>
-                    <option value="user_id" {{ $item->input_type == 'user_id' ? 'selected' : '' }}>User ID</option>
-                    <option value="id_server" {{ $item->input_type == 'id_server' ? 'selected' : '' }}>ID Server</option>
-                    <option value="no_hp" {{ $item->input_type == 'no_hp' ? 'selected' : '' }}>No. HP</option>
+                      <option value="id_game" {{ $item->input_type == 'id_game' ? 'selected' : '' }}>ID Game + Server</option>
+                      <option value="user_id" {{ $item->input_type == 'user_id' ? 'selected' : '' }}>User ID</option>
+                      <option value="no_hp" {{ $item->input_type == 'no_hp' ? 'selected' : '' }}>No. HP</option>
                   </select>
                 </div>
 
