@@ -83,7 +83,7 @@
                                                         alt="{{ $product->name }}"
                                                         onerror="this.onerror=null; this.src='{{ asset('images/raffstore-profile.jpg') }}';">
                                                 @else
-                                                    <img src="{{ asset('images/bgemptyproduct.png') }}" 
+                                                    <img src="{{ asset('images/raffstore-profile.jpg') }}" 
                                                         style="width: 100%; height: 100%; object-fit: cover;" 
                                                         alt="No Image">
                                                 @endif
