@@ -81,7 +81,7 @@
                                                     <img src="{{ url('public/assets/product/' . $product->galleries->first()->photos) }}" 
                                                         style="width: 100%; height: 100%; object-fit: cover;" 
                                                         alt="{{ $product->name }}"
-                                                        onerror="this.onerror=null; this.src='{{ asset('images/raffstore-profile.jpg' }}';">
+                                                        onerror="this.onerror=null; this.src='{{ asset('images/raffstore-profile.jpg') }}';">
                                                 @else
                                                     <img src="{{ asset('images/bgemptyproduct.png') }}" 
                                                         style="width: 100%; height: 100%; object-fit: cover;" 
