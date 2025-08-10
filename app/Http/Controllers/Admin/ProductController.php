@@ -71,6 +71,7 @@ class ProductController extends Controller
             'users_id' => auth()->user()->id, // ambil ID user yang sedang login
             'categories_id' => $request->categories_id,
             'kode_produk' => $request->kode_produk,
+            'vendor_price' => $request->vendor_price,
             'price' => $request->price,
             'status' => $request->status,
             'description' => $request->description,
@@ -107,6 +108,7 @@ class ProductController extends Controller
             'users_id' => auth()->user()->id,
             'categories_id' => $request->categories_id,
             'kode_produk' => $request->kode_produk,
+            'vendor_price' => $request->vendor_price,
             'price' => $request->price,
             'status' => $request->status,
             'description' => $request->description,

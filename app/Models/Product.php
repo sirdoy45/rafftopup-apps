@@ -12,7 +12,7 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['kode_produk', 'name', 'users_id', 'categories_id', 'price', 'description', 'slug', 'quantity', 'provider', 'type', 'input_type',];
+    protected $fillable = ['kode_produk', 'name', 'users_id', 'categories_id', 'vendor_price', 'price', 'description', 'slug', 'quantity', 'provider', 'type', 'input_type',];
     protected $hidden = [];
 
     public function scopeFilter($query, array $filters)
