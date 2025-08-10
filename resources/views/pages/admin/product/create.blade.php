@@ -55,8 +55,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label>Vendor Price</label>
-                  <input type="number" class="form-control" name="vendor_price" required>
+                    <label>Vendor Price</label>
+                    <input type="number" step="0.01" class="form-control" 
+                          name="vendor_price" value="{{ old('vendor_price') }}" required>
                 </div>
 
                 <div class="form-group">

@@ -28,6 +28,7 @@ class ProductRequest extends FormRequest
             'provider' => 'required|string|max:255',
             'categories_id' => 'required|exists:categories,id', 
             'kode_produk' => 'required|string|max:100|unique:products,kode_produk,' . $this->product,
+            'vendor_price' => 'nullable|numeric',
             'price' => 'required|integer', 
             'status' => 'required|in:aktif,nonaktif',
             'description' => 'required',
