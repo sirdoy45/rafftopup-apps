@@ -47,6 +47,11 @@
                 </div>
 
                 <div class="form-group">
+                  <label>Vendor Price</label>
+                  <input type="number" class="form-control" name="vendor_price" required>
+                </div>
+
+                <div class="form-group">
                   <label>Price</label>
                   <input type="number" class="form-control" name="price" value="{{ old('price', $item->price) }}" required>
                 </div>

@@ -25,6 +25,7 @@
                       <th>Name</th>
                       <th>Provider</th>
                       <th>Category</th>
+                      <th>Vendor Price</th>
                       <th>Price</th>
                       <th>Product Code</th>
                       <th>Status</th>
@@ -59,6 +60,7 @@
       { data: 'name', name: 'name' },
       { data: 'provider', name: 'provider' },
       { data: 'category.name', name: 'category.name' },
+      { data: 'vendor_price', name: 'vendor_price' },
       { data: 'price', name: 'price' },
       { data: 'kode_produk', name: 'kode_produk' },
       { 
